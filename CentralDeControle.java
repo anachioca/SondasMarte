@@ -1,65 +1,106 @@
 public class CentralDeControle {
     private PlanaltoMarte pm;
-    private int nSondas = 0;
+    private int countSondas = 0;
+    private int nSondas;
     private Sonda[] sondas;
-    private int[][] mapa;
 
     public CentralDeControle(){
         pm = new PlanaltoMarte();
-        mapa = new int[5][5];
-        sondas = new Sonda[5*5];
+        sondas = new Sonda[1];
+        nSondas = 0;
     }
     
-    public CentralDeControle(int x, int y){
+    public CentralDeControle(int x, int y, int n){
         pm = new PlanaltoMarte(x, y);
-        mapa = new int[x][y];
         sondas = new Sonda[x*y];
+        nSondas = n;
+    }
+
+    private boolean aterrisagemValida(int[] position){
+        if (position[0] < 0 || position[1] < 0 || position[0] >= pm.size()[0] || position[1] >= pm.size()[0]){
+            return false;
+        }
+
+        for (int i = 0; i < countSondas; i++){
+            int[] pos = sondas[i].getPosition();
+            if (pos[0] == position[0] && pos[1] == position[1]){
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public void novaSonda(int x, int y, char dir){
+        int[] position = {x, y};
+        
+        if (!aterrisagemValida(position)){
+            System.out.println("Posição de aterrisagem inválida");
+            return;
+        }
+
+        if(countSondas + 1 > nSondas){
+            System.out.println("Número máximo de sondas alcançado");
+            return;
+        }
+
         Sonda s = new Sonda(x, y, dir);
-        sondas[nSondas] = s;
-        posicionarSonda(x, y);
-        nSondas += 1;
-        System.out.println("Temos " + nSondas + " sondas.\n");
+        sondas[countSondas] = s;
+        countSondas += 1;
+        System.out.println("Temos " + countSondas + " sondas.\n");
     }
 
-    public void posicionarSonda(int x, int y){
-        mapa[x][y] = 1;
+    private boolean movimentoValido(int[] posicao, char direction){
+        int posX = posicao[0];
+        int posY = posicao[1];
+
+        if (direction == 'N') {
+            posY = posY + 1;
+        } 
+        else if (direction == 'S') {
+            posY = posY - 1;
+        } 
+        else if (direction == 'L') {
+            posX = posX + 1;
+        } 
+        else if (direction == 'O') {
+            posX = posX - 1;
+        } 
+
+        if (posX < 0 || posY < 0 || posX >= pm.size()[0] || posY >= pm.size()[0]){
+            return false;
+        }
+
+        for (int i = 0; i < countSondas; i++){
+            int[] pos = sondas[i].getPosition();
+            if (pos[0] == posX && pos[1] == posY) return false;
+        }
+
+        return true;
     }
 
     public void moverSonda(int n, char[] movimento){
         Sonda sonda = sondas[n];
         int[] position = new int[2];
+        char dir = sonda.getDirection(); // default
         for (char c: movimento){
-            sonda.moverSonda(c);
+
             position = sonda.getPosition();
-            if (position[0] < 0 || position[1] < 0 || position[0] >= pm.size()[0] || position[0] > pm.size()[0]){
+            dir = sonda.getDirection();
+            if (c == 'M' && !movimentoValido(position, dir)){
                 System.out.println("Sonda encontrou obstáculo. Movimento não concluído.\n");
                 break;
             }
+            sonda.moverSonda(c);
         }
-        char dir = sonda.getDirection();
-        System.out.println("Sonda na posição: " + position[0] + ", " + position[1] + ".\n");
-        System.out.println("Sonda na direção: " + dir + ".\n");
     }
 
     public void posicaoSondas(){
-        for (int i = 0; i < nSondas; i++){
+        for (int i = 0; i < countSondas; i++){
             Sonda s = sondas[i];
             int[] position = s.getPosition();
             char direction = s.getDirection();
             System.out.println("Posição sonda " + i + ": " + position[0] + " " + position[1] + " " + direction + "\n");
-        }
-    }
-
-    public void verMapa(){
-        System.out.println("\nMapa atual do planalto:\n");
-        for (int i = 0; i < mapa.length; i++){
-            for (int j = 0; j < mapa[i].length; j++){
-                System.out.println(mapa[i][j] + " ");
-            }
-            System.out.println("");
         }
     }
 }

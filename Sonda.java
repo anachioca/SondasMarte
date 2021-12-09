@@ -18,6 +18,10 @@ public class Sonda {
         return this.direction;
     }
 
+    // private int barreira(int x, int y){
+
+    // }
+
     public void moverSonda(char movement){
         if (movement == 'M') {
 
