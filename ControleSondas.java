@@ -1,28 +1,22 @@
-public class CentralDeControle {
+public class ControleSondas {
     private Planalto planalto;
     private int countSondas = 0;
     private int nSondas;
     private Sonda[] sondas;
     
-    public CentralDeControle(Planalto p, int n){
+    public ControleSondas(Planalto p, int n){
         planalto = p;
         nSondas = n;
         sondas = new Sonda[nSondas];
     }
 
-    private boolean aterrisagemValida(int[] position){
-        if (position[0] < 0 || position[1] < 0 || position[0] >= planalto.size()[0] || position[1] >= planalto.size()[0]){
-            return false;
-        }
-
+    public void posicaoSondas(){
         for (int i = 0; i < countSondas; i++){
-            int[] pos = sondas[i].getPosition();
-            if (pos[0] == position[0] && pos[1] == position[1]){
-                return false;
-            }
+            Sonda s = sondas[i];
+            int[] position = s.getPosition();
+            char direction = s.getDirection();
+            System.out.println("Posição sonda " + i + ": " + position[0] + " " + position[1] + " " + direction + "\n");
         }
-
-        return true;
     }
 
     public void novaSonda(int x, int y, char dir){
@@ -42,6 +36,21 @@ public class CentralDeControle {
         sondas[countSondas] = s;
         countSondas += 1;
         System.out.println("Temos " + countSondas + " sondas.\n");
+    }
+
+    private boolean aterrisagemValida(int[] position){
+        if (position[0] < 0 || position[1] < 0 || position[0] >= planalto.size()[0] || position[1] >= planalto.size()[0]){
+            return false;
+        }
+
+        for (int i = 0; i < countSondas; i++){
+            int[] pos = sondas[i].getPosition();
+            if (pos[0] == position[0] && pos[1] == position[1]){
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private boolean movimentoValido(int[] posicao, char direction){
@@ -86,15 +95,6 @@ public class CentralDeControle {
                 break;
             }
             sonda.moverSonda(c);
-        }
-    }
-
-    public void posicaoSondas(){
-        for (int i = 0; i < countSondas; i++){
-            Sonda s = sondas[i];
-            int[] position = s.getPosition();
-            char direction = s.getDirection();
-            System.out.println("Posição sonda " + i + ": " + position[0] + " " + position[1] + " " + direction + "\n");
         }
     }
 }

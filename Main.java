@@ -1,3 +1,7 @@
+// TO DO: 
+// - consertar coordenadas? começando em 0 ou em 1?
+// - criação de sondas na main, aterrisagem delas na controle.
+
 import java.util.Scanner;
 
 public class Main {
@@ -19,7 +23,7 @@ public class Main {
             System.out.println("Quantas sondas deseja enviar para Marte?");
 
             nSondas = myObj.nextInt();
-            CentralDeControle CC = new CentralDeControle(planalto, nSondas);
+            ControleSondas CC = new ControleSondas(planalto, nSondas);
             
             for (int i = 0; i < nSondas; i++){
                 System.out.println("Quais as coordenadas e direção de aterrisagem da " + (i+1) + "a sonda?");
