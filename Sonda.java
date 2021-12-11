@@ -18,27 +18,23 @@ public class Sonda {
         return this.direction;
     }
 
-    // private int barreira(int x, int y){
+    private void movimento(){
+        if (this.direction == 'N') {
+            this.posY = this.posY + 1;
+        } 
+        else if (this.direction == 'S') {
+            this.posY = this.posY - 1;
+        } 
+        else if (this.direction == 'L') {
+            this.posX = this.posX + 1;
+        } 
+        else if (this.direction == 'O') {
+            this.posX = this.posX - 1;
+        } 
+    }
 
-    // }
-
-    public void moverSonda(char movement){
-        if (movement == 'M') {
-
-            if (this.direction == 'N') {
-                this.posY = this.posY + 1;
-            } 
-            else if (this.direction == 'S') {
-                this.posY = this.posY - 1;
-            } 
-            else if (this.direction == 'L') {
-                this.posX = this.posX + 1;
-            } 
-            else if (this.direction == 'O') {
-                this.posX = this.posX - 1;
-            } 
-
-        } else if (movement == 'L') { // movimento anti-horário
+    private void rotacao(char sentido){
+        if (sentido == 'L') { // movimento anti-horário
 
             if (this.direction == 'N') {
                 this.direction = 'O';
@@ -53,7 +49,7 @@ public class Sonda {
                 this.direction = 'S';
             }
 
-        } else if (movement == 'R') { // movimento horário
+        } else if (sentido == 'R') { // movimento horário
 
             if (this.direction == 'N') {
                 this.direction = 'L';
@@ -69,4 +65,10 @@ public class Sonda {
             }
         }
     }
+
+    public void moverSonda(char instrucao){
+        if (instrucao == 'M') movimento();    
+        else rotacao(instrucao);
+    }
+    
 }

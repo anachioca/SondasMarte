@@ -1,15 +1,15 @@
-public class PlanaltoMarte {
+public class Planalto {
     private int sizeX;
     private int sizeY;
 
     // construtor default: planalto de 5x5
-    public PlanaltoMarte(){
+    public Planalto(){
         sizeX = 5;
         sizeY = 5;
     }
 
     // construtor planalto de tamanho definido
-    public PlanaltoMarte(int x, int y){
+    public Planalto(int x, int y){
         sizeX = x;
         sizeY = y;
     }

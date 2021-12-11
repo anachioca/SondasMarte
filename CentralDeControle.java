@@ -1,23 +1,17 @@
 public class CentralDeControle {
-    private PlanaltoMarte pm;
+    private Planalto planalto;
     private int countSondas = 0;
     private int nSondas;
     private Sonda[] sondas;
-
-    public CentralDeControle(){
-        pm = new PlanaltoMarte();
-        sondas = new Sonda[1];
-        nSondas = 0;
-    }
     
-    public CentralDeControle(int x, int y, int n){
-        pm = new PlanaltoMarte(x, y);
-        sondas = new Sonda[x*y];
+    public CentralDeControle(Planalto p, int n){
+        planalto = p;
         nSondas = n;
+        sondas = new Sonda[nSondas];
     }
 
     private boolean aterrisagemValida(int[] position){
-        if (position[0] < 0 || position[1] < 0 || position[0] >= pm.size()[0] || position[1] >= pm.size()[0]){
+        if (position[0] < 0 || position[1] < 0 || position[0] >= planalto.size()[0] || position[1] >= planalto.size()[0]){
             return false;
         }
 
@@ -67,7 +61,7 @@ public class CentralDeControle {
             posX = posX - 1;
         } 
 
-        if (posX < 0 || posY < 0 || posX >= pm.size()[0] || posY >= pm.size()[0]){
+        if (posX < 0 || posY < 0 || posX >= planalto.size()[0] || posY >= planalto.size()[0]){
             return false;
         }
 
