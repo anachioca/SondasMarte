@@ -1,34 +1,36 @@
+// Classe que define e implementa as funções da sonda.
+
 public class Sonda {
     private int posX;
     private int posY;
-    private char direction;
+    private char direcao;
 
     public Sonda(int x, int y, char dir){
         this.posX = x;
         this.posY = y;
-        this.direction = dir;
+        this.direcao = dir;
     }
 
-    public int[] getPosition(){
-        int[] position = {this.posX, this.posY};
-        return position;
+    public int[] getPosicao(){
+        int[] posicao = {this.posX, this.posY};
+        return posicao;
     }
 
-    public char getDirection(){
-        return this.direction;
+    public char getDirecao(){
+        return this.direcao;
     }
 
     private void movimento(){
-        if (this.direction == 'N') {
+        if (this.direcao == 'N') {
             this.posY = this.posY + 1;
         } 
-        else if (this.direction == 'S') {
+        else if (this.direcao == 'S') {
             this.posY = this.posY - 1;
         } 
-        else if (this.direction == 'L') {
+        else if (this.direcao == 'L') {
             this.posX = this.posX + 1;
         } 
-        else if (this.direction == 'O') {
+        else if (this.direcao == 'O') {
             this.posX = this.posX - 1;
         } 
     }
@@ -36,32 +38,32 @@ public class Sonda {
     private void rotacao(char sentido){
         if (sentido == 'L') { // movimento anti-horário
 
-            if (this.direction == 'N') {
-                this.direction = 'O';
+            if (this.direcao == 'N') {
+                this.direcao = 'O';
             } 
-            else if (this.direction == 'S') {
-                this.direction = 'L';
+            else if (this.direcao == 'S') {
+                this.direcao = 'L';
             } 
-            else if (this.direction == 'L') {
-                this.direction = 'N';
+            else if (this.direcao == 'L') {
+                this.direcao = 'N';
             } 
-            else if (this.direction == 'O') {
-                this.direction = 'S';
+            else if (this.direcao == 'O') {
+                this.direcao = 'S';
             }
 
         } else if (sentido == 'R') { // movimento horário
 
-            if (this.direction == 'N') {
-                this.direction = 'L';
+            if (this.direcao == 'N') {
+                this.direcao = 'L';
             } 
-            else if (this.direction == 'S') {
-                this.direction = 'O';
+            else if (this.direcao == 'S') {
+                this.direcao = 'O';
             } 
-            else if (this.direction == 'L') {
-                this.direction = 'S';
+            else if (this.direcao == 'L') {
+                this.direcao = 'S';
             } 
-            else if (this.direction == 'O') {
-                this.direction = 'N';
+            else if (this.direcao == 'O') {
+                this.direcao = 'N';
             }
         }
     }

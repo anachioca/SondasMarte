@@ -1,3 +1,6 @@
+// Classe responsável pela criação/aterrisagem de sondas na superfície a ser explorada,
+// movimentação das sondas e checagem de validade de cada movimento.
+
 public class ControleSondas {
     private Planalto planalto;
     private int countSondas = 0;
@@ -5,47 +8,68 @@ public class ControleSondas {
     private Sonda[] sondas;
     
     public ControleSondas(Planalto p, int n){
-        planalto = p;
-        nSondas = n;
-        sondas = new Sonda[nSondas];
+        this.planalto = p;
+        this.nSondas = n;
+        this.sondas = new Sonda[nSondas];
     }
 
     public void posicaoSondas(){
-        for (int i = 0; i < countSondas; i++){
+        for (int i = 0; i < this.countSondas; i++){
             Sonda s = sondas[i];
-            int[] position = s.getPosition();
-            char direction = s.getDirection();
-            System.out.println("Posição sonda " + i + ": " + position[0] + " " + position[1] + " " + direction + "\n");
+            int[] posicao = s.getPosicao();
+            char direcao = s.getDirecao();
+            System.out.println("Posição sonda " + i + ": " + posicao[0] + " " + posicao[1] + " " + direcao);
         }
     }
 
-    public void novaSonda(int x, int y, char dir){
-        int[] position = {x, y};
+    // Criação e aterrisagem de novas sondas
+    public boolean novaSonda(int x, int y, char dir){
+        int[] posicao = {x, y};
         
-        if (!aterrisagemValida(position)){
+        // Coordenadas de aterrisagem estão dentro dos limites do planalto?
+        if (!aterrisagemValida(posicao)){
             System.out.println("Posição de aterrisagem inválida");
-            return;
-        }
-
-        if(countSondas + 1 > nSondas){
-            System.out.println("Número máximo de sondas alcançado");
-            return;
-        }
-
-        Sonda s = new Sonda(x, y, dir);
-        sondas[countSondas] = s;
-        countSondas += 1;
-        System.out.println("Temos " + countSondas + " sondas.\n");
-    }
-
-    private boolean aterrisagemValida(int[] position){
-        if (position[0] < 0 || position[1] < 0 || position[0] >= planalto.size()[0] || position[1] >= planalto.size()[0]){
             return false;
         }
 
-        for (int i = 0; i < countSondas; i++){
-            int[] pos = sondas[i].getPosition();
-            if (pos[0] == position[0] && pos[1] == position[1]){
+        // Número pré-definido de sondas já foi alcançado?
+        if(this.countSondas + 1 > this.nSondas){
+            System.out.println("Número máximo de sondas alcançado");
+            return false;
+        }
+
+        Sonda s = new Sonda(x, y, dir);
+        this.sondas[this.countSondas] = s;
+        this.countSondas += 1;
+        return true;
+    }
+
+    // Controla movimentação das sondas.
+    public void moverSonda(int n, char[] movimento){
+        Sonda sonda = this.sondas[n];
+        int[] posicao = new int[2];
+        char direcao = sonda.getDirecao(); // default
+        for (char c: movimento){
+            posicao = sonda.getPosicao();
+            direcao = sonda.getDirecao();
+            if (c == 'M' && !movimentoValido(posicao, direcao)){
+                System.out.println("Sonda encontrou obstáculo. Movimento não concluído.\n");
+                break;
+            }
+            sonda.moverSonda(c);
+        }
+    }
+
+    // Checa se as coordenadas de aterrisagem são validas, ou seja, se estão dentro da área definida
+    // e se não existem sondas naquela posição.
+    private boolean aterrisagemValida(int[] posicao){
+        if (!this.planalto.posValida(posicao[0], posicao[1])){
+            return false;
+        }
+
+        for (int i = 0; i < this.countSondas; i++){
+            int[] pos = this.sondas[i].getPosicao();
+            if (pos[0] == posicao[0] && pos[1] == posicao[1]){
                 return false;
             }
         }
@@ -53,48 +77,35 @@ public class ControleSondas {
         return true;
     }
 
-    private boolean movimentoValido(int[] posicao, char direction){
+    // Checa se o movimento a ser realizado por uma sonda irá levá-la a uma
+    // posição válida, ou seja, se a posição está dentro da área definida
+    // e se não existem sondas naquela posição.
+    private boolean movimentoValido(int[] posicao, char direcao){
         int posX = posicao[0];
         int posY = posicao[1];
 
-        if (direction == 'N') {
+        if (direcao == 'N') {
             posY = posY + 1;
         } 
-        else if (direction == 'S') {
+        else if (direcao == 'S') {
             posY = posY - 1;
         } 
-        else if (direction == 'L') {
+        else if (direcao == 'L') {
             posX = posX + 1;
         } 
-        else if (direction == 'O') {
+        else if (direcao == 'O') {
             posX = posX - 1;
         } 
 
-        if (posX < 0 || posY < 0 || posX >= planalto.size()[0] || posY >= planalto.size()[0]){
+        if (!planalto.posValida(posX, posY)){
             return false;
         }
 
         for (int i = 0; i < countSondas; i++){
-            int[] pos = sondas[i].getPosition();
+            int[] pos = sondas[i].getPosicao();
             if (pos[0] == posX && pos[1] == posY) return false;
         }
 
         return true;
-    }
-
-    public void moverSonda(int n, char[] movimento){
-        Sonda sonda = sondas[n];
-        int[] position = new int[2];
-        char dir = sonda.getDirection(); // default
-        for (char c: movimento){
-
-            position = sonda.getPosition();
-            dir = sonda.getDirection();
-            if (c == 'M' && !movimentoValido(position, dir)){
-                System.out.println("Sonda encontrou obstáculo. Movimento não concluído.\n");
-                break;
-            }
-            sonda.moverSonda(c);
-        }
     }
 }
