@@ -3,12 +3,18 @@
 public class Sonda {
     private int posX;
     private int posY;
-    private char direcao;
+    private int direcao; // index do vetor 'direcoes' referente a direcao da sonda
+    private char[] direcoes = {'N', 'E', 'S', 'W'};
 
     public Sonda(int x, int y, char dir){
         this.posX = x;
         this.posY = y;
-        this.direcao = dir;
+        for (int i = 0; i < direcoes.length; i++){
+            if (direcoes[i] == dir){
+                direcao = i;
+                break;
+            }
+        }
     }
 
     public int[] getPosicao(){
@@ -17,54 +23,34 @@ public class Sonda {
     }
 
     public char getDirecao(){
-        return this.direcao;
+        return this.direcoes[direcao];
     }
 
+    // movimenta a sonda em uma unidade.
     private void movimento(){
-        if (this.direcao == 'N') {
+        char dir = direcoes[direcao];
+        if (dir == 'N') {
             this.posY = this.posY + 1;
         } 
-        else if (this.direcao == 'S') {
+        else if (dir == 'S') {
             this.posY = this.posY - 1;
         } 
-        else if (this.direcao == 'L') {
+        else if (dir == 'E') {
             this.posX = this.posX + 1;
         } 
-        else if (this.direcao == 'O') {
+        else if (dir == 'W') {
             this.posX = this.posX - 1;
         } 
     }
 
+    // rotaciona a sonda.
     private void rotacao(char sentido){
-        if (sentido == 'L') { // movimento anti-horário
-
-            if (this.direcao == 'N') {
-                this.direcao = 'O';
-            } 
-            else if (this.direcao == 'S') {
-                this.direcao = 'L';
-            } 
-            else if (this.direcao == 'L') {
-                this.direcao = 'N';
-            } 
-            else if (this.direcao == 'O') {
-                this.direcao = 'S';
-            }
-
-        } else if (sentido == 'R') { // movimento horário
-
-            if (this.direcao == 'N') {
-                this.direcao = 'L';
-            } 
-            else if (this.direcao == 'S') {
-                this.direcao = 'O';
-            } 
-            else if (this.direcao == 'L') {
-                this.direcao = 'S';
-            } 
-            else if (this.direcao == 'O') {
-                this.direcao = 'N';
-            }
+        if (sentido == 'L') { // movimento anti-horário, decrementa 'direcao'
+            direcao -= 1;
+            if (direcao < 0) direcao = direcoes.length - 1;
+        } else if (sentido == 'R') { // movimento horário, incrementa 'direcao'
+            direcao += 1;
+            if (direcao >= direcoes.length) direcao = 0;
         }
     }
 

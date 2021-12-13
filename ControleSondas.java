@@ -1,4 +1,4 @@
-// Classe responsável pela criação/aterrisagem de sondas na superfície a ser explorada,
+// Classe responsável pela criação/aterrissagem de sondas na superfície a ser explorada,
 // movimentação das sondas e checagem de validade de cada movimento.
 
 public class ControleSondas {
@@ -22,13 +22,13 @@ public class ControleSondas {
         }
     }
 
-    // Criação e aterrisagem de novas sondas
+    // Criação e aterrissagem de novas sondas
     public boolean novaSonda(int x, int y, char dir){
         int[] posicao = {x, y};
         
-        // Coordenadas de aterrisagem estão dentro dos limites do planalto?
-        if (!aterrisagemValida(posicao)){
-            System.out.println("Posição de aterrisagem inválida");
+        // Coordenadas de aterrissagem estão dentro dos limites do planalto?
+        if (!aterrissagemValida(posicao)){
+            System.out.println("Posição de aterrissagem inválida");
             return false;
         }
 
@@ -60,9 +60,9 @@ public class ControleSondas {
         }
     }
 
-    // Checa se as coordenadas de aterrisagem são validas, ou seja, se estão dentro da área definida
+    // Checa se as coordenadas de aterrissagem são validas, ou seja, se estão dentro da área definida
     // e se não existem sondas naquela posição.
-    private boolean aterrisagemValida(int[] posicao){
+    private boolean aterrissagemValida(int[] posicao){
         if (!this.planalto.posValida(posicao[0], posicao[1])){
             return false;
         }
@@ -90,10 +90,10 @@ public class ControleSondas {
         else if (direcao == 'S') {
             posY = posY - 1;
         } 
-        else if (direcao == 'L') {
+        else if (direcao == 'E') {
             posX = posX + 1;
         } 
-        else if (direcao == 'O') {
+        else if (direcao == 'W') {
             posX = posX - 1;
         } 
 

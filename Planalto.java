@@ -32,7 +32,7 @@ public class Planalto {
         }
     }
 
-    // validade da coordenada (x, y)
+    // coordenada (x, y) faz parte do planalto?
     public boolean posValida(int x, int y){
         if (x >= this.tamX || y >= this.tamY || x < 0 || y < 0) return false;
         if (this.posValidas[x][y] == 1) return true;

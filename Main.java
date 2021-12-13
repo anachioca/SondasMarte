@@ -1,13 +1,9 @@
-// TO DO: 
-// - criação de sondas na main, aterrisagem delas na controle.
-
 import java.util.Scanner;
 
 public class Main {
     public static void main (String[] args) throws Exception {
 
         boolean novaMissao = true;
-        int x = -1, y = -1, horizontal = -1, vertical = -1, nSondas = -1;
         char dir = 'N', c;
         String linha;
         Scanner scanner = new Scanner(System.in);
@@ -16,8 +12,9 @@ public class Main {
 
         while(novaMissao){
             System.out.println("\nNova missão espacial iniciada...");
-            
+            int x = -1, y = -1, horizontal = -1, vertical = -1, nSondas = -1;
 
+            // definição e criação do planalto a ser explorado.
             do {
                 System.out.println("\nQuais as coordenadas do ponto superior direito do planalto que deseja explorar? (Apenas números inteiros e positivos.)");
                 try {
@@ -27,10 +24,10 @@ public class Main {
                     scanner.next();
                 }
             } while (horizontal < 0 || vertical < 0);
-
             
             Planalto planalto = new Planalto(horizontal+1, vertical+1);
 
+            // definição da quantidade de sondas a serem enviadas e criação da central de controle responsável pela missão.
             do {
                 System.out.println("\nQuantas sondas deseja enviar para Marte? (Apenas números inteiros e positivos.)");
                 try {
@@ -42,10 +39,11 @@ public class Main {
             
             ControleSondas CC = new ControleSondas(planalto, nSondas);
             
+            // aterrissagem e movimentação de cada sonda.
             for (int i = 0; i < nSondas; i++){
                 
                 do {
-                    System.out.println("\nQuais as coordenadas e direção de aterrisagem da " + (i+1) + "a sonda? (ex.: 1 1 N)");
+                    System.out.println("\nQuais as coordenadas e direção de aterrissagem da " + (i+1) + "a sonda? (ex.: 1 1 N)");
                     try {
                         x = scanner.nextInt();
                         y = scanner.nextInt();
@@ -56,7 +54,7 @@ public class Main {
                     }
                 } while (x < 0 || y < 0);
 
-                // Se nova sonda for criada e aterrisada com sucesso, continuar operação de exploração.
+                // Se nova sonda for criada e aterrissada com sucesso, continuar operação de exploração.
                 if (CC.novaSonda(x, y, dir)){
                     linha = scanner.nextLine(); // consumindo o \n que está no scanner.
                     System.out.println("\nQual a sequência de instruções a serem seguidas pela " + (i+1) + "a sonda?");
