@@ -41,6 +41,7 @@ public class ControleSondas {
         Sonda s = new Sonda(x, y, dir);
         this.sondas[this.countSondas] = s;
         this.countSondas += 1;
+        System.out.println(this.sondas);
         return true;
     }
 
@@ -48,6 +49,7 @@ public class ControleSondas {
     public void moverSonda(int n, char[] movimento){
         Sonda sonda = this.sondas[n];
         int[] posicao = new int[2];
+        System.out.println(sonda);
         char direcao = sonda.getDirecao(); // default
         for (char c: movimento){
             posicao = sonda.getPosicao();

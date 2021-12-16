@@ -65,7 +65,10 @@ public class Main {
                         instrucoes[j] = linha.charAt(j);
                     }
                     CC.moverSonda(i, instrucoes);
-                }                
+                }   
+                else { 
+                    i--; // sonda não foi criada.
+                }             
             }
 
             System.out.println("\nPosição final das sondas:");
